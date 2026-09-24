@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import postRoutes from './routes/postRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 const app = express();
@@ -26,6 +27,7 @@ app.use('/api', async (req, res, next) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/posts', postRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
