@@ -1,0 +1,64 @@
+/* Design tokens. Components use these roles, never raw colors, so both themes stay in sync. */
+
+:root {
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --radius: 2px;
+  --page-width: 1080px;
+  --prose-width: 42rem;
+  --gutter: 16px;
+
+  --color-bg: #f6f4ef;
+  --color-surface: #fbfaf7;
+  --color-text: #1d1b18;
+  --color-muted: #5f5a52;
+  --color-faint: #8a8479;
+  --color-border: #dcd7cc;
+  --color-border-strong: #b5ae9f;
+  --color-accent: #1f4f8f;
+  --color-danger: #a3321f;
+  --color-success: #3b6b2f;
+  --color-code-bg: #eeebe3;
+  --color-skeleton: #e5e1d7;
+  --color-highlight: #ebe5d3;
+
+  --syntax-keyword: #1f4f8f;
+  --syntax-string: #3b6b2f;
+  --syntax-number: #8a4b12;
+  --syntax-comment: #8a8479;
+  --syntax-title: #1d1b18;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #171613;
+  --color-surface: #1e1d19;
+  --color-text: #e9e5dc;
+  --color-muted: #aba59a;
+  --color-faint: #7f7a6f;
+  --color-border: #34322c;
+  --color-border-strong: #555147;
+  --color-accent: #93b4e0;
+  --color-danger: #e38b78;
+  --color-success: #9cc48c;
+  --color-code-bg: #201f1b;
+  --color-skeleton: #2a2823;
+  --color-highlight: #2f2b22;
+
+  --syntax-keyword: #93b4e0;
+  --syntax-string: #a9c99a;
+  --syntax-number: #d9a66f;
+  --syntax-comment: #7f7a6f;
+  --syntax-title: #e9e5dc;
+
+  color-scheme: dark;
+}
+
+@media (min-width: 720px) {
+  :root {
+    --gutter: 24px;
+  }
+}

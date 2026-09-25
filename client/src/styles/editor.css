@@ -1,0 +1,158 @@
+.editor {
+  display: grid;
+  gap: 20px;
+}
+
+.editor__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.editor__title {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  padding: 8px 0 12px;
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  resize: none;
+}
+
+.editor__title:focus {
+  outline: none;
+  border-bottom-color: var(--color-text);
+}
+
+.editor__meta {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 720px) {
+  .editor__meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.editor__panes {
+  display: grid;
+  gap: 24px;
+}
+
+.editor__pane-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+
+.editor__content {
+  min-height: 420px;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+}
+
+.editor__preview {
+  min-height: 420px;
+  padding: 16px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.editor__preview-empty {
+  color: var(--color-faint);
+  font-style: italic;
+}
+
+.editor__pane-tabs {
+  display: none;
+}
+
+@media (min-width: 960px) {
+  .editor__panes {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* On narrower screens only one pane is shown at a time, switched with tabs. */
+@media (max-width: 959px) {
+  .editor__pane-tabs {
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  .editor__pane[data-active='false'] {
+    display: none;
+  }
+
+  .editor__pane-label {
+    display: none;
+  }
+}
+
+/* Tag input: chips with a text box on the end */
+
+.tag-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.tag-input:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -1px;
+  border-color: var(--color-accent);
+}
+
+.tag-input__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 4px 1px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.tag-input__remove {
+  background: none;
+  border: 0;
+  padding: 0 4px;
+  cursor: pointer;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.tag-input__field {
+  flex: 1;
+  min-width: 120px;
+  border: 0;
+  background: transparent;
+  padding: 3px 4px;
+}
+
+.tag-input__field:focus {
+  outline: none;
+}
