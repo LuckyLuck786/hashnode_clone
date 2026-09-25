@@ -72,7 +72,7 @@ export default function Dashboard() {
       </div>
 
       {deleteError && (
-        <p className="form-error" role="alert" style={{ marginBottom: 16 }}>
+        <p className="form-error form-error--spaced" role="alert">
           {deleteError}
         </p>
       )}
@@ -102,9 +102,7 @@ export default function Dashboard() {
                   {post.title}
                 </Link>
                 <p className="meta">
-                  <span className={`status-label status-label--${post.status}`}>
-                    {post.status}
-                  </span>
+                  <span className={`status-label status-label--${post.status}`}>{post.status}</span>
                   <span>Updated {formatDate(post.updatedAt)}</span>
                 </p>
               </div>

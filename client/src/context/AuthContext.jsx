@@ -8,7 +8,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   // True until we know whether a saved token is still valid, so protected pages do not
   // redirect to the login screen during the first request.
-  const [isLoading, setIsLoading] = useState(() => Boolean(localStorage.getItem(TOKEN_STORAGE_KEY)));
+  const [isLoading, setIsLoading] = useState(() =>
+    Boolean(localStorage.getItem(TOKEN_STORAGE_KEY)),
+  );
 
   useEffect(() => {
     if (!localStorage.getItem(TOKEN_STORAGE_KEY)) return;

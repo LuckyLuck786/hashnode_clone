@@ -91,7 +91,7 @@ function FeedSidebar() {
         <h2 className="sidebar-heading">About {SITE_NAME}</h2>
         <p>{SITE_TAGLINE}</p>
         {!user && (
-          <p style={{ marginTop: 12 }}>
+          <p className="sidebar-note">
             <Link to="/register" className="text-link">
               Create an account
             </Link>{' '}
@@ -120,7 +120,7 @@ function FeedSidebar() {
             ))}
           </ul>
         )}
-        <p style={{ marginTop: 14 }}>
+        <p className="sidebar-note">
           <Link to="/tags" className="text-link">
             All tags
           </Link>

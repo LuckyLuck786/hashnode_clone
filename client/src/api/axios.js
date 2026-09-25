@@ -16,7 +16,8 @@ api.interceptors.request.use((config) => {
 // Turns an Axios error into a sentence that can be shown to the user.
 export function getErrorMessage(error, fallback = 'Something went wrong. Please try again.') {
   if (error?.response?.data?.message) return error.response.data.message;
-  if (error?.request && !error.response) return 'Could not reach the server. Check your connection.';
+  if (error?.request && !error.response)
+    return 'Could not reach the server. Check your connection.';
   return fallback;
 }
 

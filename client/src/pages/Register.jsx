@@ -49,12 +49,26 @@ export default function Register() {
         )}
         <Field label="Name" hint="Shown next to your posts.">
           {(props) => (
-            <input {...props} name="name" className="input" autoComplete="name" maxLength={60} required />
+            <input
+              {...props}
+              name="name"
+              className="input"
+              autoComplete="name"
+              maxLength={60}
+              required
+            />
           )}
         </Field>
         <Field label="Email">
           {(props) => (
-            <input {...props} name="email" type="email" className="input" autoComplete="email" required />
+            <input
+              {...props}
+              name="email"
+              type="email"
+              className="input"
+              autoComplete="email"
+              required
+            />
           )}
         </Field>
         <Field label="Password" hint={`At least ${MIN_PASSWORD_LENGTH} characters.`}>

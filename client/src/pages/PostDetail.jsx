@@ -115,7 +115,7 @@ function OwnerActions({ post }) {
         </button>
       </div>
       {error && (
-        <p className="form-error" role="alert" style={{ marginTop: 12 }}>
+        <p className="form-error form-error--spaced" role="alert">
           {error}
         </p>
       )}
@@ -142,7 +142,12 @@ function PostSkeleton() {
       <Skeleton width="60%" height={36} style={{ marginBottom: 28 }} />
       <Skeleton width={220} height={16} style={{ marginBottom: 40 }} />
       {Array.from({ length: 6 }, (_, index) => (
-        <Skeleton key={index} width={index % 3 === 2 ? '70%' : '100%'} height={16} style={{ marginBottom: 12 }} />
+        <Skeleton
+          key={index}
+          width={index % 3 === 2 ? '70%' : '100%'}
+          height={16}
+          style={{ marginBottom: 12 }}
+        />
       ))}
     </div>
   );

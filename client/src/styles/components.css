@@ -320,3 +320,24 @@
   font-size: 0.8125rem;
   color: var(--color-faint);
 }
+
+/* Small layout helpers */
+
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.inline-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.form-error--spaced {
+  margin: 12px 0 16px;
+}
+
+.sidebar-note {
+  margin-top: 12px;
+}

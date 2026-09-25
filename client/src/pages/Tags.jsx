@@ -25,7 +25,9 @@ export default function Tags() {
       )}
       {status === 'error' && <ErrorMessage message={error} />}
       {status === 'ready' && !tags.length && (
-        <StateMessage title="No tags yet">Tags appear once someone adds them to a post.</StateMessage>
+        <StateMessage title="No tags yet">
+          Tags appear once someone adds them to a post.
+        </StateMessage>
       )}
       {status === 'ready' && tags.length > 0 && (
         <ul className="tag-index">

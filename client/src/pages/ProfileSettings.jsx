@@ -83,7 +83,7 @@ export default function ProfileSettings() {
         </Field>
         <Field label="Avatar URL" hint="Optional. Leave empty to show your initials.">
           {(props) => (
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div className="inline-row">
               <Avatar user={{ ...user, ...values }} size={40} />
               <input
                 {...props}
@@ -96,7 +96,7 @@ export default function ProfileSettings() {
             </div>
           )}
         </Field>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div className="inline-row">
           <button type="submit" className="btn btn--primary" disabled={status === 'saving'}>
             {status === 'saving' ? 'Saving...' : 'Save changes'}
           </button>

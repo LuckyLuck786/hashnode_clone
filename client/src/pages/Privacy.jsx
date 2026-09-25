@@ -35,9 +35,9 @@ export default function Privacy() {
 
         <h2>Cookies and local storage</h2>
         <p>
-          {SITE_NAME} does not use tracking or advertising cookies. Your browser&apos;s local storage
-          keeps your sign in token and your light or dark theme choice. Logging out removes the
-          token.
+          {SITE_NAME} does not use tracking or advertising cookies. Your browser&apos;s local
+          storage keeps your sign in token and your light or dark theme choice. Logging out removes
+          the token.
         </p>
 
         <h2>Third parties</h2>

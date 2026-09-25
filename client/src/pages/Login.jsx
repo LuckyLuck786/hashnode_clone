@@ -45,7 +45,14 @@ export default function Login() {
         )}
         <Field label="Email">
           {(props) => (
-            <input {...props} name="email" type="email" className="input" autoComplete="email" required />
+            <input
+              {...props}
+              name="email"
+              type="email"
+              className="input"
+              autoComplete="email"
+              required
+            />
           )}
         </Field>
         <Field label="Password">

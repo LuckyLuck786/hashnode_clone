@@ -54,7 +54,7 @@ export default function Profile() {
         list.status === 'loading' && (
           <div className="profile-header" aria-hidden="true">
             <Skeleton width={72} height={72} />
-            <div style={{ flex: 1 }}>
+            <div className="grow">
               <Skeleton width="50%" height={28} style={{ marginBottom: 10 }} />
               <Skeleton width="80%" height={14} />
             </div>

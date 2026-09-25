@@ -129,12 +129,7 @@ function EditorForm({ post }) {
           {notice && <span className="form-success">{notice}</span>}
         </p>
         <div className="editor__actions">
-          <button
-            type="button"
-            className="btn"
-            onClick={() => save('draft')}
-            disabled={isSaving}
-          >
+          <button type="button" className="btn" onClick={() => save('draft')} disabled={isSaving}>
             {savingAs === 'draft' ? 'Saving...' : isPublished ? 'Unpublish' : 'Save draft'}
           </button>
           <button type="submit" className="btn btn--primary" disabled={isSaving}>
@@ -176,7 +171,10 @@ function EditorForm({ post }) {
             />
           )}
         </Field>
-        <Field label="Tags" hint={`Up to ${MAX_TAGS_PER_POST}. Press Enter or comma after each one.`}>
+        <Field
+          label="Tags"
+          hint={`Up to ${MAX_TAGS_PER_POST}. Press Enter or comma after each one.`}
+        >
           {(props) => (
             <TagInput
               {...props}

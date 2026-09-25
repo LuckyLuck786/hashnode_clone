@@ -30,7 +30,11 @@ const rehypePlugins = [[rehypeHighlight, { detect: false }]];
 export default function MarkdownView({ source }) {
   return (
     <div className="markdown">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={rehypePlugins} components={components}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={rehypePlugins}
+        components={components}
+      >
         {source}
       </ReactMarkdown>
     </div>
