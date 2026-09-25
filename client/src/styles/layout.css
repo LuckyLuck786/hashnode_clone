@@ -61,12 +61,12 @@
   font-weight: 500;
 }
 
-.menu-toggle {
+.site-header .menu-toggle {
   display: none;
 }
 
 @media (max-width: 719px) {
-  .menu-toggle {
+  .site-header .menu-toggle {
     display: inline-flex;
   }
 

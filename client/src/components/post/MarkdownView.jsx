@@ -25,7 +25,7 @@ const components = {
   },
 };
 
-const rehypePlugins = [[rehypeHighlight, { detect: false, ignoreMissing: true }]];
+const rehypePlugins = [[rehypeHighlight, { detect: false }]];
 
 export default function MarkdownView({ source }) {
   return (
