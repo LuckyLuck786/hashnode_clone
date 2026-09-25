@@ -4,23 +4,43 @@ const MAX_TAG_LENGTH = 30;
 
 // "  #JavaScript " -> "javascript", matching how the API stores tag names.
 function normalizeTag(value) {
-  return value.trim().replace(/^#+/, '').replace(/\s+/g, ' ').toLowerCase().slice(0, MAX_TAG_LENGTH);
+  return value
+    .trim()
+    .replace(/^#+/, '')
+    .replace(/\s+/g, ' ')
+    .toLowerCase()
+    .slice(0, MAX_TAG_LENGTH);
 }
 
 export default function TagInput({ id, tags, onChange, max, ...inputProps }) {
   const [draft, setDraft] = useState('');
   const isFull = tags.length >= max;
 
-  function addTag(value) {
-    const tag = normalizeTag(value);
-    if (tag && !tags.includes(tag) && !isFull) onChange([...tags, tag]);
+  function addTags(values) {
+    const next = [...tags];
+    for (const tag of values.map(normalizeTag)) {
+      if (tag && !next.includes(tag) && next.length < max) next.push(tag);
+    }
+    if (next.length !== tags.length) onChange(next);
+  }
+
+  // Typing or pasting "react, node" adds every finished tag and keeps the rest as a draft.
+  function handleChange(event) {
+    const parts = event.target.value.split(',');
+    const unfinished = parts.pop();
+    if (parts.length) addTags(parts);
+    setDraft(unfinished);
+  }
+
+  function commitDraft() {
+    addTags([draft]);
     setDraft('');
   }
 
   function handleKeyDown(event) {
-    if (event.key === 'Enter' || event.key === ',') {
+    if (event.key === 'Enter') {
       event.preventDefault();
-      addTag(draft);
+      commitDraft();
     } else if (event.key === 'Backspace' && !draft && tags.length) {
       onChange(tags.slice(0, -1));
     }
@@ -48,9 +68,9 @@ export default function TagInput({ id, tags, onChange, max, ...inputProps }) {
         value={draft}
         placeholder={isFull ? `Up to ${max} tags` : 'Add a tag and press Enter'}
         disabled={isFull}
-        onChange={(event) => setDraft(event.target.value)}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
-        onBlur={() => draft && addTag(draft)}
+        onBlur={() => draft && commitDraft()}
         maxLength={MAX_TAG_LENGTH}
       />
     </div>
