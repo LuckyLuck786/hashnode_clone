@@ -1,3 +1,4 @@
+import Comment from '../models/Comment.js';
 import Post from '../models/Post.js';
 import Tag from '../models/Tag.js';
 import httpError from '../utils/httpError.js';
@@ -6,15 +7,12 @@ import { isHttpUrl } from '../utils/validators.js';
 import {
   AUTHOR_PUBLIC_FIELDS,
   TAG_FIELDS,
+  buildSearchFilter,
   emptyPage,
   listPublishedPosts,
 } from '../utils/postQueries.js';
 
 const MAX_TAGS_PER_POST = 5;
-
-function escapeRegex(text) {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
 
 async function createUniqueSlug(title, excludePostId) {
   const base = slugify(title) || 'post';
@@ -86,10 +84,7 @@ function withRelations(query) {
 
 // GET /api/posts?search=&tag=&page=&limit=
 export async function getPosts(req, res) {
-  const filter = {};
-
-  const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
-  if (search) filter.title = { $regex: escapeRegex(search), $options: 'i' };
+  const filter = buildSearchFilter(req.query.search);
 
   if (typeof req.query.tag === 'string' && req.query.tag) {
     const tag = await Tag.findOne({ slug: req.query.tag });
@@ -98,6 +93,25 @@ export async function getPosts(req, res) {
   }
 
   res.json(await listPublishedPosts(filter, req.query));
+}
+
+// GET /api/posts/following — published posts by authors the reader follows.
+export async function getFollowingFeed(req, res) {
+  if (!req.user.following.length) return res.json(emptyPage());
+  const filter = { ...buildSearchFilter(req.query.search), author: { $in: req.user.following } };
+  res.json(await listPublishedPosts(filter, req.query));
+}
+
+// GET /api/posts/bookmarks — the reader's saved-for-later list.
+// Bookmarks live on the post (see the Post model), so "saved by me" is one indexed lookup.
+export async function getBookmarkedPosts(req, res) {
+  const saved = await Post.find({ bookmarks: req.user._id })
+    .sort({ createdAt: -1 })
+    .select('-content -likes -bookmarks')
+    .populate('author', AUTHOR_PUBLIC_FIELDS)
+    .populate('tags', TAG_FIELDS);
+
+  res.json({ posts: saved });
 }
 
 // GET /api/posts/mine
@@ -118,7 +132,14 @@ export async function getPostBySlug(req, res) {
   if (!post || (post.status !== 'published' && !post.isAuthoredBy(req.user))) {
     throw httpError(404, 'Post not found');
   }
-  res.json({ post });
+
+  // The reader only needs their own like flag, not the id of everyone else who liked it.
+  const liked = post.isLikedBy(req.user);
+  const plain = post.toJSON();
+  delete plain.likes;
+  delete plain.bookmarks;
+
+  res.json({ post: plain, liked });
 }
 
 // GET /api/posts/:id/edit
@@ -155,6 +176,46 @@ export async function updatePost(req, res) {
 // DELETE /api/posts/:id
 export async function deletePost(req, res) {
   const post = await findOwnedPost(req.params.id, req.user);
-  await post.deleteOne();
+  // Comments go with the post; the saved-list references live on the post itself, so
+  // deleting it removes them in the same write.
+  await Promise.all([Comment.deleteMany({ post: post._id }), post.deleteOne()]);
   res.json({ message: 'Post deleted', id: post._id });
+}
+
+// Toggling likes and bookmarks returns the new state rather than a bare 204, so the
+// client updates its button without refetching the whole post. The update is a single
+// atomic $addToSet/$pull plus $inc rather than read-modify-write, so two readers reacting
+// to the same post at once cannot overwrite each other's count.
+async function toggleReaction(req, res, { field, countField }) {
+  const userId = req.user._id;
+  const alreadySet = await Post.exists({ _id: req.params.id, [field]: userId });
+
+  const update = alreadySet
+    ? { $pull: { [field]: userId }, $inc: { [countField]: -1 } }
+    : { $addToSet: { [field]: userId }, $inc: { [countField]: 1 } };
+
+  const post = await Post.findOneAndUpdate(
+    { _id: req.params.id },
+    update,
+    { returnDocument: 'after' },
+  );
+
+  if (!post) throw httpError(404, 'Post not found');
+
+  res.json({
+    liked: post.isLikedBy(req.user),
+    likeCount: post.likeCount,
+    bookmarked: post.bookmarks.some((id) => id.equals(userId)),
+    bookmarkCount: post.bookmarkCount,
+  });
+}
+
+// POST /api/posts/:id/like
+export function toggleLike(req, res) {
+  return toggleReaction(req, res, { field: 'likes', countField: 'likeCount' });
+}
+
+// POST /api/posts/:id/bookmark
+export function toggleBookmark(req, res) {
+  return toggleReaction(req, res, { field: 'bookmarks', countField: 'bookmarkCount' });
 }

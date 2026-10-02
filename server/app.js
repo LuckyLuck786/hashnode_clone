@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 import tagRoutes from './routes/tagRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
@@ -30,6 +31,7 @@ app.use('/api', async (req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/comments', commentRoutes);
 app.use('/api/tags', tagRoutes);
 app.use('/api/users', userRoutes);
 

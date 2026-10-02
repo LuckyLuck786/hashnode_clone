@@ -4,6 +4,8 @@ import { EMAIL_PATTERN, optionalHttpUrl } from '../utils/validators.js';
 
 const SALT_ROUNDS = 10;
 
+export const THEMES = ['light', 'dark'];
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -34,9 +36,19 @@ const userSchema = new mongoose.Schema(
       default: '',
       validate: optionalHttpUrl('Avatar URL'),
     },
+    // Ids of the authors this user follows. Personalised feeds filter on this field.
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    // Persisted per account so a signed-in reader keeps their preference across devices.
+    theme: {
+      type: String,
+      enum: { values: THEMES, message: 'Theme must be light or dark' },
+      default: 'light',
+    },
   },
   { timestamps: true },
 );
+
+userSchema.index({ following: 1 });
 
 userSchema.pre('save', async function hashPassword() {
   if (!this.isModified('password')) return;
@@ -48,9 +60,12 @@ userSchema.methods.matchPassword = function matchPassword(candidate) {
 };
 
 // Never send the password hash to the client, even if it was selected.
+// `following` is dropped too: it is a list of ids the reader never needs, and the
+// public shapes expose following/follower counts instead.
 userSchema.set('toJSON', {
   transform: (doc, ret) => {
     delete ret.password;
+    delete ret.following;
     delete ret.__v;
     return ret;
   },

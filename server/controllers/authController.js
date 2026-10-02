@@ -1,11 +1,12 @@
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
 import httpError from '../utils/httpError.js';
+import { toSessionUser } from '../utils/userQueries.js';
 
 const MIN_PASSWORD_LENGTH = 8;
 
 function authResponse(user) {
-  return { token: generateToken(user._id), user };
+  return { token: generateToken(user._id), user: toSessionUser(user) };
 }
 
 // POST /api/auth/register
@@ -45,5 +46,5 @@ export async function login(req, res) {
 
 // GET /api/auth/me
 export function getMe(req, res) {
-  res.json({ user: req.user });
+  res.json({ user: toSessionUser(req.user) });
 }
