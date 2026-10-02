@@ -7,3 +7,7 @@ coverage/
 .vercel/
 .DS_Store
 *.log
+
+# Local agent/editor tooling metadata, not part of the project.
+.claude/
+.freebuff/

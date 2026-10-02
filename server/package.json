@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "seed": "node scripts/seed.js",
-    "test": "node --test --test-concurrency=1 \"tests/**/*.test.js\""
+    "test": "node --test --test-concurrency=1 \"tests/**/*.test.js\"",
+    "dev:memory": "node scripts/dev-memory.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

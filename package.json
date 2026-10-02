@@ -8,14 +8,21 @@
     "server"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace server & npm run dev --workspace client",
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm:dev:server\" \"npm:dev:client\"",
     "dev:server": "npm run dev --workspace server",
     "dev:client": "npm run dev --workspace client",
     "build": "npm run build --workspace client",
     "test": "npm test --workspace server",
-    "seed": "npm run seed --workspace server"
+    "seed": "npm run seed --workspace server --",
+    "dev:memory": "npm run dev:memory --workspace server"
   },
   "engines": {
     "node": ">=20"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }
