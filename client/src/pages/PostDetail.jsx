@@ -10,6 +10,7 @@ import ErrorMessage from '../components/ErrorMessage.jsx';
 import { ArticleSkeleton } from '../components/Skeleton.jsx';
 import useRequest from '../hooks/useRequest.js';
 import useDocumentTitle from '../hooks/useDocumentTitle.js';
+import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import useAuth from '../hooks/useAuth.js';
 import { formatDate } from '../utils/format.js';
 
@@ -29,6 +30,13 @@ export default function PostDetail() {
   const [thread, setThread] = useState(null);
 
   useDocumentTitle(data?.post.title);
+
+  // A shared link gets the post's own title, excerpt and cover image.
+  useDocumentMeta({
+    title: data?.post.title,
+    description: data?.post.excerpt,
+    image: data?.post.coverImage,
+  });
 
   const postId = data?.post?._id;
   // A draft has no public discussion, so its comments are never fetched.

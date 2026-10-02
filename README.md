@@ -49,8 +49,7 @@ posts. Readers can follow authors to build a personal feed.
 (one level of replies, so threads stay readable on a phone).
 
 **Reading comfort.** A light/dark theme toggle that follows your account across devices,
-plus a crash-proof error boundary and shareable link previews with real titles, authors
-and cover images.
+plus a crash-proof error boundary and per-page titles, descriptions and social meta tags.
 
 ---
 
@@ -223,7 +222,7 @@ Together they cover the four baseline pass conditions:
 - drafts never appear in the public feed, tag pages, profiles or personalised feeds;
 - ownership is enforced server-side, not just hidden in the UI.
 
-Plus the community features, auth rate limiting, and the Open Graph meta proxy.
+Plus the community features, auth rate limiting, and the document meta tags.
 
 ---
 
@@ -232,7 +231,6 @@ Plus the community features, auth rate limiting, and the Open Graph meta proxy.
 ```
 .
 ├── api/index.js              # Vercel serverless entry point
-├── proxy.js                  # Routing Middleware: per-post Open Graph tags
 ├── client/
 │   ├── src/
 │   │   ├── api/axios.js      # pre-configured Axios instance + error helper
@@ -241,11 +239,11 @@ Plus the community features, auth rate limiting, and the Open Graph meta proxy.
 │   │   │   ├── post/         # PostCard, PostList, TagPill
 │   │   │   ├── editor/       # MarkdownEditor, MarkdownPreview, highlighter
 │   │   │   └── …             # ReactionBar, CommentThread, FollowButton, …
-│   │   ├── context/          # AuthContext, ThemeContext
-│   │   ├── hooks/            # useAuth, useRequest, useDocumentTitle
-│   │   ├── pages/            # one file per route
-│   │   ├── styles/           # design tokens + component styles
-│   │   ├── App.jsx           # all routes
+│   │   ├── context/          # AuthContext, ThemeContext│   │   ├── hooks/              # useAuth, useRequest, useDocumentTitle/Meta
+│   │   ├── pages/              # one file per route
+│   │   ├── styles/             # design tokens + component styles
+│   │   ├── utils/              # formatting, page meta tags
+│   │   ├── App.jsx             # all routes
 │   │   └── main.jsx
 │   └── vite.config.js
 ├── server/
@@ -379,6 +377,29 @@ arrays.
 - **The error boundary** keeps a render crash from leaving a visitor on a blank page, and
   clears a stale token when the failure looks session-related. Stack traces are only
   rendered in development builds.
+- **Markdown is rendered without raw HTML** (see above), and page metadata is written
+  through `createElement`/`setAttribute` rather than `innerHTML`, so post content cannot
+  inject into the document head.
+
+---
+
+## Known limitations
+
+**Social previews are browser-only.** `useDocumentMeta` writes the correct title,
+description and Open Graph tags into the document head once a post loads. Link crawlers
+(Slack, Discord, X, iMessage) fetch the raw HTML *before* any JavaScript runs, so a
+pasted link still shows the generic site preview. Fixing that needs either server-side
+rendering or a build-time prerender, and this project is deliberately a client-rendered
+SPA. A Vercel Routing Middleware that injected the tags from MongoDB was tried first; it
+worked under test but could not be verified on a preview deployment, so it was removed
+rather than shipped unverified.
+
+**Rate limiting is per-instance and in-memory.** Behind several serverless instances each
+keeps its own window, so the effective limit is multiplied by the number of warm
+instances. A shared store such as Redis would be the next step.
+
+**Two client implementations exist.** `backup/pre-community-features` holds an earlier,
+independently built client. See the commit history.
 
 ---
 

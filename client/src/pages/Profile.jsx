@@ -9,6 +9,7 @@ import ErrorMessage from '../components/ErrorMessage.jsx';
 import { PostListSkeleton } from '../components/Skeleton.jsx';
 import useRequest from '../hooks/useRequest.js';
 import useDocumentTitle from '../hooks/useDocumentTitle.js';
+import useDocumentMeta from '../hooks/useDocumentMeta.js';
 import useAuth from '../hooks/useAuth.js';
 import { formatDate } from '../utils/format.js';
 
@@ -24,6 +25,12 @@ export default function Profile() {
   );
 
   useDocumentTitle(data?.user.name);
+
+  useDocumentMeta({
+    title: data?.user.name,
+    description: data?.user.bio || undefined,
+    image: data?.user.avatarUrl,
+  });
 
   if (loading) {
     return (

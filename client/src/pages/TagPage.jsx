@@ -7,6 +7,7 @@ import ErrorMessage from '../components/ErrorMessage.jsx';
 import { PostListSkeleton } from '../components/Skeleton.jsx';
 import useRequest from '../hooks/useRequest.js';
 import useDocumentTitle from '../hooks/useDocumentTitle.js';
+import useDocumentMeta from '../hooks/useDocumentMeta.js';
 
 export default function TagPage() {
   const { slug } = useParams();
@@ -19,6 +20,13 @@ export default function TagPage() {
   );
 
   useDocumentTitle(data ? `#${data.tag.name}` : null);
+
+  useDocumentMeta({
+    title: data ? `#${data.tag.name}` : null,
+    description: data
+      ? `Every published post tagged ${data.tag.name} on Monospace.`
+      : undefined,
+  });
 
   return (
     <main className="app-main" id="main">
