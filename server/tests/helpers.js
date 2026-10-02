@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { resetRateLimits } from '../middleware/rateLimit.js';
 
 let mongo;
 
@@ -23,6 +24,9 @@ export async function stopApp() {
 export async function clearDatabase() {
   const collections = Object.values(mongoose.connection.collections);
   await Promise.all(collections.map((collection) => collection.deleteMany({})));
+  // Supertest sends every request from the same address, so the auth rate limiter would
+  // otherwise start rejecting registrations part way through the suite.
+  resetRateLimits();
 }
 
 let userCounter = 0;
