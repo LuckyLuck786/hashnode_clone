@@ -4,7 +4,7 @@ A developer-first blogging and publishing platform built on the pure MERN stack 
 MongoDB, Express, React and Node. Write in Markdown, get syntax-highlighted code,
 tag your posts, and browse a public feed of what other developers are publishing.
 
-![stack](https://img.shields.io/badge/built%20with-MERN-8c3a1f) ![tests](https://img.shields.io/badge/tests-55%20passing-2f6f4a)
+![stack](https://img.shields.io/badge/built%20with-MERN-8c3a1f) ![tests](https://img.shields.io/badge/tests-83%20passing-2f6f4a)
 
 ---
 
@@ -48,7 +48,9 @@ posts. Readers can follow authors to build a personal feed.
 **Community.** Like and save posts, and join the discussion with threaded comments
 (one level of replies, so threads stay readable on a phone).
 
-**Reading comfort.** A light/dark theme toggle that follows your account across devices.
+**Reading comfort.** A light/dark theme toggle that follows your account across devices,
+plus a crash-proof error boundary and shareable link previews with real titles, authors
+and cover images.
 
 ---
 
@@ -64,7 +66,7 @@ posts. Readers can follow authors to build a personal feed.
 | Highlighting | `lowlight` (a slim `highlight.js` build) |
 | HTTP | Axios, with a request interceptor that attaches the token |
 | State | React Context API (`AuthContext`, `ThemeContext`) plus local component state |
-| Tests | `node:test` + Supertest + in-memory MongoDB |
+| Tests | `node:test` + Supertest + in-memory MongoDB, and Vitest + Testing Library |
 
 No TypeScript, no server-side rendering — the client is a SPA and the API only ever
 returns JSON.
@@ -192,7 +194,10 @@ Run from the repository root (npm workspaces):
 | `npm run dev:server` | API only, against `MONGODB_URI` |
 | `npm run dev:client` | Vite dev server only |
 | `npm run build` | Production build of the client into `client/dist` |
-| `npm test` | Runs the API test suite against in-memory MongoDB |
+| `npm test` | Runs both test suites (API + client components) |
+| `npm run test:server` | API tests only |
+| `npm run test:client` | Client component tests only |
+| `npm run test:coverage` | Client coverage report |
 | `npm run seed` | Wipes and refills the database from `server/scripts/seedData.js` |
 
 ---
@@ -203,20 +208,22 @@ Run from the repository root (npm workspaces):
 npm test
 ```
 
-55 tests run against a real (in-memory) MongoDB through the full Express app, so
-routing, middleware, controllers and the database are all exercised. No database setup
-or network access is required.
+Two suites run:
 
-Coverage includes the four baseline pass conditions:
+- **68 API tests** (`server/tests/`) drive the real Express app against an in-memory
+  MongoDB, so routing, middleware, controllers and the database are all exercised. No
+  database setup or network access is required.
+- **15 client tests** (`client/src/test/`) render components in jsdom with Testing
+  Library, covering the error boundary, route protection and the theme toggle.
+
+Together they cover the four baseline pass conditions:
 
 - passwords are bcrypt-hashed and never returned;
 - a second user cannot edit or delete someone else's post by calling the API directly;
 - drafts never appear in the public feed, tag pages, profiles or personalised feeds;
 - ownership is enforced server-side, not just hidden in the UI.
 
-Plus the community features: likes, bookmarks, threaded comments (including who may
-delete them), follows, follower/following lists, personalised feed search, and theme
-persistence.
+Plus the community features, auth rate limiting, and the Open Graph meta proxy.
 
 ---
 
@@ -225,6 +232,7 @@ persistence.
 ```
 .
 ├── api/index.js              # Vercel serverless entry point
+├── proxy.js                  # Routing Middleware: per-post Open Graph tags
 ├── client/
 │   ├── src/
 │   │   ├── api/axios.js      # pre-configured Axios instance + error helper
@@ -365,6 +373,12 @@ arrays.
 - **Input is validated** for types, lengths, URL schemes and tag counts before anything
   reaches the database.
 - **`helmet()`** sets security headers and CORS is restricted to `CLIENT_URL`.
+- **Login and registration are rate limited** to 10 and 5 attempts per IP per window, so
+  passwords cannot be brute-forced. Login and registration never reveal whether an email
+  exists.
+- **The error boundary** keeps a render crash from leaving a visitor on a blank page, and
+  clears a stale token when the failure looks session-related. Stack traces are only
+  rendered in development builds.
 
 ---
 
