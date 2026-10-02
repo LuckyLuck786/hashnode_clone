@@ -1,0 +1,72 @@
+/* Syntax colours for rehype-highlight output. Muted, warm, deliberately low-saturation
+   so code blocks read as type rather than as decoration. */
+
+.hljs-comment,
+.hljs-quote {
+  color: #8a8375;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-name {
+  color: #d99a6c;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #a8bf8b;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-template-variable,
+.hljs-variable,
+.hljs-link {
+  color: #c98a87;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-title.class_,
+.hljs-title.function_ {
+  color: #e2c88b;
+}
+
+.hljs-attr,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-property {
+  color: #98b6bf;
+}
+
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #b9a7cf;
+}
+
+.hljs-meta,
+.hljs-tag {
+  color: #9b958a;
+}
+
+.hljs-deletion {
+  color: #cf8d86;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 600;
+}

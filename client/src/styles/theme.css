@@ -1,0 +1,44 @@
+/* Dark palette. Every colour in the app resolves through the tokens in base.css, so the
+   whole design switches by overriding them here instead of duplicating component rules.
+   Kept dark-but-warm to match the light palette's paper-and-ink character. */
+[data-theme='dark'] {
+  --paper: #16151a;
+  --paper-raised: #1e1d23;
+  --paper-sunken: #101014;
+
+  --ink: #ece9e2;
+  --ink-soft: #b3afa6;
+  --ink-muted: #837f77;
+
+  --rule: #302e36;
+  --rule-strong: #43414b;
+
+  --accent: #e59270;
+  --accent-deep: #f2b294;
+  --accent-wash: #2c1f1a;
+
+  --danger: #e08a85;
+  --danger-wash: #33201f;
+}
+
+/* The theme toggle is a small bordered square so it reads as a control next to the
+   text links in the masthead. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}

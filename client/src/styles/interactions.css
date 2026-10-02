@@ -1,0 +1,186 @@
+/* Reaction bar (like / bookmark) shared by the post page and post cards. */
+.reaction-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.reaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.reaction:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+.reaction:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.reaction--on {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.reaction__error {
+  color: var(--danger);
+  font-size: 0.8125rem;
+}
+
+.reaction-bar--sm .reaction {
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.8125rem;
+}
+
+.article__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+
+.post-card__likes {
+  color: var(--ink-muted);
+}
+
+/* Follow / following toggle on a profile. */
+.follow-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Feed scope tabs: Everyone / Following. */
+.feed-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.feed-tab {
+  padding: var(--space-1) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.feed-tab:hover {
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+
+.feed-tab--on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* Comment thread. */
+.comments {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+
+.comments__heading {
+  font-size: 1.125rem;
+  margin-bottom: var(--space-4);
+}
+
+.comments__signin,
+.comments__loading {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+}
+
+.comment__list,
+.comment__replies {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-5) 0 0;
+}
+
+.comment {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--rule);
+}
+
+.comment__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+.comment__meta a {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.comment__meta a:hover {
+  text-decoration: underline;
+}
+
+.comment__text {
+  margin-top: var(--space-1);
+  /* Long pasted code or URLs wrap instead of stretching the column. */
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.comment__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.comment__replies {
+  margin-top: var(--space-3);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--rule);
+}
+
+.comment--reply {
+  border-top: none;
+  padding-bottom: 0;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.comment-form .input {
+  resize: vertical;
+  font: inherit;
+  line-height: 1.5;
+}
