@@ -12,7 +12,10 @@
     "dev:server": "npm run dev --workspace server",
     "dev:client": "npm run dev --workspace client",
     "build": "npm run build --workspace client",
-    "test": "npm test --workspace server",
+    "test": "npm test --workspace server && npm test --workspace client",
+    "test:server": "npm test --workspace server",
+    "test:client": "npm test --workspace client",
+    "test:coverage": "npm run test:coverage --workspace client",
     "seed": "npm run seed --workspace server --",
     "dev:memory": "npm run dev:memory --workspace server"
   },
@@ -24,5 +27,8 @@
   },
   "devDependencies": {
     "concurrently": "^10.0.5"
+  },
+  "dependencies": {
+    "@vercel/functions": "^3.9.11"
   }
 }
