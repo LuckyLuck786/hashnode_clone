@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Private routes have no public content to index.
+Disallow: /dashboard
+Disallow: /editor
+Disallow: /settings
+Disallow: /bookmarks
+
+Sitemap: https://monospace-blog.vercel.app/sitemap.xml
